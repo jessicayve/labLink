@@ -6,11 +6,12 @@ export const CardContainer = styled.article`
   border-radius: 16px;
   padding: 18px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-
   &:hover {
     transform: translateY(-1px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid #ff6489 ;
   }
 
   @media (max-width: 768px) {
@@ -24,6 +25,7 @@ export const CardHeader = styled.div`
   align-items: center;
   gap: 12px;
   margin-bottom: 14px;
+  
 `;
 
 export const Avatar = styled.div`
@@ -62,6 +64,7 @@ export const Content = styled.p`
   color: #333;
   margin: 0 0 16px;
   word-break: break-word;
+  
 
   @media (max-width: 768px) {
     font-size: 15px;

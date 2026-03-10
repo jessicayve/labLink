@@ -47,7 +47,7 @@ export const FeedHero = styled.section`
   border-radius: 18px;
   padding: 22px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-
+  
   @media (max-width: 768px) {
     padding: 18px;
     border-radius: 16px;
@@ -60,7 +60,9 @@ export const FeedHeroTitle = styled.h1`
   gap: 8px;
   font-size: 24px;
   font-weight: 700;
-  color: #222;
+  background: linear-gradient(90deg, #ff6489 0%, #f9b24e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: 0 0 8px;
 
   @media (max-width: 768px) {

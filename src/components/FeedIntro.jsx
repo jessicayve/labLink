@@ -6,6 +6,7 @@ const IntroCard = styled.section`
   border: 1px solid #f0e4dc;
   border-radius: 16px;
   padding: 20px;
+  
 
   @media (max-width: 768px) {
     padding: 16px;
