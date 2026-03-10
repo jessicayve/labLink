@@ -8,7 +8,6 @@ import {
   TagList,
   Tag,
 } from "./SidebarCardStyled";
-
 import WhatshotOutlinedIcon from "@mui/icons-material/WhatshotOutlined";
 import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
@@ -29,8 +28,12 @@ const RightSidebar = ({ posts }) => {
         {topPosts.length > 0 ? (
           topPosts.map((post) => (
             <Item key={post.id}>
-              <ItemTitle>{post.creator?.creatorName || "User"} 🔥</ItemTitle>
-              <ItemText>{post.content?.slice(0, 60)}...</ItemText>
+              <ItemTitle>{post.creator?.name || "User"} 🔥</ItemTitle>
+              <ItemText>
+                {post.content?.length > 60
+                  ? `${post.content.slice(0, 60)}...`
+                  : post.content}
+              </ItemText>
             </Item>
           ))
         ) : (
@@ -46,12 +49,16 @@ const RightSidebar = ({ posts }) => {
 
         <Item>
           <ItemTitle>Start a discussion 💡</ItemTitle>
-          <ItemText>Share questions, ideas or quick updates with the community.</ItemText>
+          <ItemText>
+            Share questions, ideas or quick updates with the community.
+          </ItemText>
         </Item>
 
         <Item>
           <ItemTitle>Engage with posts ❤️</ItemTitle>
-          <ItemText>Likes and comments make your feed feel more alive.</ItemText>
+          <ItemText>
+            Likes and comments make your feed feel more alive.
+          </ItemText>
         </Item>
       </SidebarCard>
 

@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import styled from "styled-components";
 
 const IntroCard = styled.section`
@@ -6,18 +6,27 @@ const IntroCard = styled.section`
   border: 1px solid #f0e4dc;
   border-radius: 16px;
   padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 `;
 
 const Title = styled.h1`
   margin: 0 0 8px;
   font-size: 24px;
   color: #222;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const Subtitle = styled.p`
   margin: 0 0 16px;
   color: #666;
   font-size: 14px;
+  line-height: 1.5;
 `;
 
 const StatsRow = styled.div`

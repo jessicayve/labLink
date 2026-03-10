@@ -4,108 +4,114 @@ import CircularProgress from "@mui/material/CircularProgress"
 
 import {
   Container,
+  FormCard,
   Input,
   Button,
   TextoContainer,
   Titulo,
+  Subtitle,
+  CheckboxRow
 } from "../SignUpPage/SignUpPageStyled"
 import Header from "../../components/Header"
 import { authService } from "../../services/authService"
-import { goToFeedPage } from "../../routes/coordinator";
+import { goToFeedPage } from "../../routes/coordinator"
 
 const SignupPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: "",
-  });
+    password: ""
+  })
 
   const onChangeForm = (event) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
 
     setForm((prevForm) => ({
       ...prevForm,
-      [name]: value,
-    }));
-  };
+      [name]: value
+    }))
+  }
 
   const signup = async () => {
     try {
-      setIsLoading(true);
+      setIsLoading(true)
 
       const body = {
         name: form.name,
         email: form.email,
-        password: form.password,
-      };
+        password: form.password
+      }
 
-      const data = await authService.signup(body);
+      const data = await authService.signup(body)
 
-      window.localStorage.setItem("lablink-token", data.token);
+      window.localStorage.setItem("lablink-token", data.token)
 
-      goToFeedPage(navigate);
+      goToFeedPage(navigate)
     } catch (error) {
-      console.error("Erro no signup:", error);
-      alert(error?.response?.data?.message || "Erro ao criar conta.");
+      console.error("Signup error:", error)
+      alert(error?.response?.data?.message || "Could not create your account.")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <Container>
       <Header />
 
-      <Titulo>Welcome to LabLink</Titulo>
+      <FormCard>
+        <Titulo>Welcome to LabLink</Titulo>
+        <Subtitle>Create your account and start sharing with the community</Subtitle>
 
-      <Input
-        value={form.name}
-        onChange={onChangeForm}
-        name="name"
-        placeholder="Nickname"
-        autoComplete="off"
-      />
+        <Input
+          value={form.name}
+          onChange={onChangeForm}
+          name="name"
+          placeholder="Nickname"
+          autoComplete="off"
+        />
 
-      <Input
-        value={form.email}
-        name="email"
-        onChange={onChangeForm}
-        placeholder="E-mail"
-        autoComplete="off"
-      />
+        <Input
+          value={form.email}
+          name="email"
+          onChange={onChangeForm}
+          placeholder="Email"
+          autoComplete="off"
+        />
 
-      <Input
-        name="password"
-        value={form.password}
-        onChange={onChangeForm}
-        type="password"
-        placeholder="Password"
-        autoComplete="off"
-      />
+        <Input
+          name="password"
+          value={form.password}
+          onChange={onChangeForm}
+          type="password"
+          placeholder="Password"
+          autoComplete="off"
+        />
 
-      <TextoContainer>
-        <p>
-          By continuing, you are agreeing to our
-          <span> User Agreement </span>
-          and our
-          <span> Privacy Policy</span>.
-        </p>
+        <TextoContainer>
+          <p>
+            By continuing, you agree to our
+            <span> User Agreement </span>
+            and
+            <span> Privacy Policy</span>.
+          </p>
 
-        <p>
-          <input type="checkbox" /> I agree to receive emails about cool stuff
-          from LabLink.
-        </p>
-      </TextoContainer>
+          <CheckboxRow>
+            <input type="checkbox" />
+            <span>I agree to receive emails about updates from LabLink.</span>
+          </CheckboxRow>
+        </TextoContainer>
 
-      <Button onClick={signup} type="button">
-        {isLoading ? <CircularProgress color="inherit" size={30} /> : "Sign Up"}
-      </Button>
+        <Button onClick={signup} type="button" disabled={isLoading}>
+          {isLoading ? <CircularProgress color="inherit" size={28} /> : "Sign Up"}
+        </Button>
+      </FormCard>
     </Container>
-  );
-};
+  )
+}
 
-export default SignupPage;
+export default SignupPage

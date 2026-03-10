@@ -1,14 +1,27 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const Container = styled.div`
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 24px 16px;
   background: linear-gradient(180deg, #fff8f3 0%, #ffffff 100%);
-`;
+
+  @media (max-width: 480px) {
+    padding: 20px 12px;
+    align-items: flex-start;
+  }
+`
+
+export const Card = styled.div`
+  width: 100%;
+  max-width: 420px;
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+  }
+`
 
 export const LogoWrapper = styled.div`
   display: flex;
@@ -16,7 +29,7 @@ export const LogoWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 8px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   text-align: center;
 
   img {
@@ -24,19 +37,32 @@ export const LogoWrapper = styled.div`
     max-width: 100%;
     display: block;
   }
-`;
+
+  @media (max-width: 480px) {
+    margin-bottom: 20px;
+
+    img {
+      width: 130px;
+    }
+  }
+`
 
 export const Subtitle = styled.p`
-  font-family: "Rubik", sans-serif;
   color: #fe7e02;
   font-weight: 600;
   margin: 0;
   font-size: 15px;
-`;
+  line-height: 1.5;
+  max-width: 320px;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    max-width: 280px;
+  }
+`
 
 export const Form = styled.form`
   width: 100%;
-  max-width: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,7 +70,18 @@ export const Form = styled.form`
   padding: 28px 24px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-`;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+`
 
 export const Input = styled.input`
   width: 100%;
@@ -67,7 +104,13 @@ export const Input = styled.input`
     opacity: 0.7;
     cursor: not-allowed;
   }
-`;
+
+  @media (max-width: 480px) {
+    height: 48px;
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+`
 
 export const ErrorMessage = styled.p`
   width: 100%;
@@ -75,14 +118,13 @@ export const ErrorMessage = styled.p`
   color: #d32f2f;
   font-size: 14px;
   text-align: left;
-`;
+`
 
 export const BtnContinuar = styled.button`
   width: 100%;
   height: 50px;
   border-radius: 27px;
   background: linear-gradient(90deg, #ff6489 0%, #f9b24e 100%);
-  font-family: "Noto Sans", sans-serif;
   font-weight: 700;
   font-size: 18px;
   text-align: center;
@@ -101,15 +143,25 @@ export const BtnContinuar = styled.button`
     opacity: 0.7;
     cursor: not-allowed;
   }
-`;
+
+  @media (max-width: 480px) {
+    height: 48px;
+    font-size: 16px;
+  }
+`
 
 export const Line = styled.div`
   height: 1px;
   width: 100%;
   max-width: 360px;
-  margin: 20px auto;
+  margin: 16px auto 20px;
   background: linear-gradient(90deg, #ff6489 0%, #f9b24e 100%);
-`;
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+    margin: 14px auto 18px;
+  }
+`
 
 export const Button = styled.button`
   width: 100%;
@@ -117,7 +169,6 @@ export const Button = styled.button`
   height: 50px;
   border: 1px solid #fe7e02;
   border-radius: 27px;
-  font-family: "Noto Sans", sans-serif;
   font-weight: 700;
   font-size: 18px;
   text-align: center;
@@ -125,6 +176,9 @@ export const Button = styled.button`
   background-color: white;
   cursor: pointer;
   transition: 0.2s;
+  display: block;
+  margin: 0 auto;
+  box-sizing: border-box;
 
   &:hover:not(:disabled) {
     background-color: #fff7f0;
@@ -134,4 +188,10 @@ export const Button = styled.button`
     opacity: 0.7;
     cursor: not-allowed;
   }
-`;
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+    height: 48px;
+    font-size: 16px;
+  }
+`

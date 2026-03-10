@@ -1,6 +1,5 @@
 import React from "react";
-import mini from "../assets/mini.png";
-import { goToLoginPage, goToFeedPage } from "../routes/coordinator";
+import { goToLoginPage, goToFeedPage } from "../routes/coordinator"
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   ContainerHeader,
@@ -9,7 +8,8 @@ import {
   LogoImage,
   LogoText,
   LogoutButton,
-} from "./HeaderStyled";
+} from "./HeaderStyled"
+
 
 const Header = () => {
   const location = useLocation();
@@ -22,6 +22,7 @@ const Header = () => {
 
   const isSignupPage = location.pathname === "/signup";
   const isFeedPage = location.pathname === "/feed";
+  const isLoginPage = location.pathname === "/login" || location.pathname === "/";
 
   return (
     <ContainerHeader>
@@ -33,7 +34,7 @@ const Header = () => {
             }
           }}
         >
-          <LogoImage src={mini} alt="LabLink logo" />
+          
           <LogoText>LabLink</LogoText>
         </LogoArea>
 
@@ -41,10 +42,12 @@ const Header = () => {
           <LogoutButton onClick={() => goToLoginPage(navigate)}>
             ← Login
           </LogoutButton>
-        ) : (
-          <LogoutButton onClick={logout}>
-            Logout
+        ) : isLoginPage ? (
+          <LogoutButton onClick={() => navigate("/signup")}>
+            Sign up
           </LogoutButton>
+        ) : (
+          <LogoutButton onClick={logout}>Logout</LogoutButton>
         )}
       </HeaderContent>
     </ContainerHeader>

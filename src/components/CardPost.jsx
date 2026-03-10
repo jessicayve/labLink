@@ -13,49 +13,53 @@ import {
   ActionButton,
   MetaRow,
   CommentPreview,
-} from "./CardPostStyled"
-import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined"
-import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined"
+} from "./CardPostStyled";
+import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 
 const CardPost = ({ post }) => {
-  const { fetchPosts } = useContext(GlobalContext)
-  const [isLoading, setIsLoading] = useState(false)
+  const { fetchPosts } = useContext(GlobalContext);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const like = async () => {
-    setIsLoading(true)
+  const handleLike = async () => {
+    setIsLoading(true);
 
     try {
-      const token = window.localStorage.getItem("lablink-token")
+      const token = window.localStorage.getItem("lablink-token");
+
       await axios.put(
         `${BASE_URL}/posts/${post.id}/like`,
         { like: true },
         { headers: { Authorization: token } }
-      )
-      fetchPosts()
-    } catch (error) {
-      console.error(error?.response?.data)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+      );
 
-  const dislike = async () => {
-    setIsLoading(true)
+      fetchPosts();
+    } catch (error) {
+      console.error("Like error:", error?.response?.data || error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDislike = async () => {
+    setIsLoading(true);
 
     try {
-      const token = window.localStorage.getItem("lablink-token")
+      const token = window.localStorage.getItem("lablink-token");
+
       await axios.put(
         `${BASE_URL}/posts/${post.id}/like`,
         { like: false },
         { headers: { Authorization: token } }
-      )
-      fetchPosts()
+      );
+
+      fetchPosts();
     } catch (error) {
-      console.error(error?.response?.data)
+      console.error("Dislike error:", error?.response?.data || error.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <CardContainer>
@@ -79,14 +83,14 @@ const CardPost = ({ post }) => {
       </MetaRow>
 
       <ActionRow>
-        <ActionButton onClick={like} disabled={isLoading}>
+        <ActionButton onClick={handleLike} disabled={isLoading}>
           <ThumbUpAltOutlinedIcon />
-          {post.likes}
+          {post.likes || 0}
         </ActionButton>
 
-        <ActionButton onClick={dislike} disabled={isLoading}>
+        <ActionButton onClick={handleDislike} disabled={isLoading}>
           <ThumbDownAltOutlinedIcon />
-          {post.dislikes}
+          {post.dislikes || 0}
         </ActionButton>
       </ActionRow>
 
@@ -94,7 +98,7 @@ const CardPost = ({ post }) => {
         <CommentPreview>View {post.comments} comment(s)</CommentPreview>
       )}
     </CardContainer>
-  )
-}
+  );
+};
 
-export default CardPost
+export default CardPost;
