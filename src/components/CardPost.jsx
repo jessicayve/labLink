@@ -1,109 +1,100 @@
-import { CardContainer } from "./CardPostStyled"
-import likeIcon from "../assets/likeIcon.png"
-import dislikeIcon from "../assets/dislikeIcon.png"
-
 import { useContext, useState } from "react"
-import { GlobalContext } from "../context/GlobalContext"
+import React from "react"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
-import { BASE_URL, TOKEN_NAME } from "../constants/url"
-//import {goToDetailsPage} from "../routes/coordinator"
+import { GlobalContext } from "../context/GlobalContext"
+import { BASE_URL } from "../constants/storage"
+import {
+  CardContainer,
+  CardHeader,
+  Avatar,
+  UserInfo,
+  Content,
+  ActionRow,
+  ActionButton,
+  MetaRow,
+  CommentPreview,
+} from "./CardPostStyled"
+import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined"
+import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined"
 
+const CardPost = ({ post }) => {
+  const { fetchPosts } = useContext(GlobalContext)
+  const [isLoading, setIsLoading] = useState(false)
 
+  const like = async () => {
+    setIsLoading(true)
 
-const CardPost = (props) => {
-    const navigate = useNavigate()
-
-    const { post } = props
-
-    const context = useContext(GlobalContext)
-
-    const { fetchPosts } = context
-
-    const [isLoading, setIsLoading] = useState(false)
-
-    const like = async () => {
-        setIsLoading(true)
-
-        try {
-            const token = window.localStorage.getItem("labeddit-token")
-
-            const config = {
-                headers: {
-                    Authorization: token
-                }
-            }
-
-            const body = {
-                like: true
-            }
-
-            await axios.put(BASE_URL + `/posts/${post.id}/like`, body, config)
-            setIsLoading(false)
-            fetchPosts()
-        } catch (error) {
-            console.error(error?.response?.data)
-        }
+    try {
+      const token = window.localStorage.getItem("lablink-token")
+      await axios.put(
+        `${BASE_URL}/posts/${post.id}/like`,
+        { like: true },
+        { headers: { Authorization: token } }
+      )
+      fetchPosts()
+    } catch (error) {
+      console.error(error?.response?.data)
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    const dislike = async () => {
-        setIsLoading(true)
+  const dislike = async () => {
+    setIsLoading(true)
 
-        try {
-            const token = window.localStorage.getItem("labeddit-token")
-
-            const config = {
-                headers: {
-                    Authorization: token
-                }
-            }
-
-            const body = {
-                like: false
-            }
-
-            await axios.put(BASE_URL + `/posts/${post.id}/like`, body, config)
-            setIsLoading(false)
-            fetchPosts()
-        } catch (error) {
-            console.error(error?.response?.data)
-        }
+    try {
+      const token = window.localStorage.getItem("lablink-token")
+      await axios.put(
+        `${BASE_URL}/posts/${post.id}/like`,
+        { like: false },
+        { headers: { Authorization: token } }
+      )
+      fetchPosts()
+    } catch (error) {
+      console.error(error?.response?.data)
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    
+  return (
+    <CardContainer>
+      <CardHeader>
+        <Avatar>
+          {post.creator?.name?.charAt(0)?.toUpperCase() || "U"}
+        </Avatar>
 
-    return (
-        <CardContainer>
-            <div>
-                <h2>Send By: {props.post.creator.creatorName} </h2>
-                <p>{props.post.content} </p>
+        <UserInfo>
+          <strong>{post.creator?.name || "User"}</strong>
+          <span>Shared with the community</span>
+        </UserInfo>
+      </CardHeader>
 
-                <div>
-                    <span className="likes" >
+      <Content>{post.content}</Content>
 
-                        <img
-                            src={likeIcon}
-                            onClick={() => like(post.id)}
-                            style={{ cursor: "pointer" }}
-                            alt="like" />
+      <MetaRow>
+        <span>❤️ {post.likes || 0} likes</span>
+        <span>👎 {post.dislikes || 0} dislikes</span>
+        <span>💬 {post.comments || 0} comments</span>
+      </MetaRow>
 
-        {" "}  {post.likes}
+      <ActionRow>
+        <ActionButton onClick={like} disabled={isLoading}>
+          <ThumbUpAltOutlinedIcon />
+          {post.likes}
+        </ActionButton>
 
-                        <img
-                            src={dislikeIcon}
-                            alt="dislike"
-                            onClick={() => dislike(post.id)}
-                            style={{ cursor: "pointer" }} />
-                
-                          
+        <ActionButton onClick={dislike} disabled={isLoading}>
+          <ThumbDownAltOutlinedIcon />
+          {post.dislikes}
+        </ActionButton>
+      </ActionRow>
 
-                    </span>
-
-                   
-                </div>
-            </div>
-        </CardContainer>
-    )
-
+      {post.comments > 0 && (
+        <CommentPreview>View {post.comments} comment(s)</CommentPreview>
+      )}
+    </CardContainer>
+  )
 }
+
 export default CardPost

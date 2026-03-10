@@ -1,94 +1,127 @@
-import { Container, Input, Button, BtnContinuar, Line } from "./LoginPageStyled"
-import logoLab from "../../assets/logoLab.png"
-import { useState } from "react"
-import axios from "axios"
-import { BASE_URL } from "../../constants/url"
-import { goToFeedPage, goToSignupPage } from "../../routes/coordinator"
-import { useNavigate } from "react-router-dom"
-import CircularProgress from '@mui/material/CircularProgress'
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export const LoginPage = () => {
+import {
+  Container,
+  Form,
+  Input,
+  BtnContinuar,
+  Line,
+  Button,
+  LogoWrapper,
+  Subtitle,
+  ErrorMessage,
+} from "./LoginPageStyled";
 
+import logoLab from "../../assets/logoLab.png";
+import { authService } from "../../services/authService";
+import { goToFeedPage, goToSignupPage } from "../../routes/coordinator";
 
-  const navigate = useNavigate()
-
-  const [isLoading, setIsLoading] = useState(false)
+const LoginPage = () => {
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onChangeForm = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value })
-  }
+    const { name, value } = event.target;
 
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
 
-
-  const login = async () => {
-    try {
-
-      setIsLoading(true)
-
-      const body = {
-        email: form.email,
-        password: form.password
-      }
-      const response = await axios.post(
-        `${BASE_URL}/users/login`,
-        body
-      )
-      window.localStorage.setItem("labeddit-token", response.data.token)
-      setIsLoading(false)
-      
-      goToFeedPage(navigate)
-
-
-    } catch (error) {
-      console.log(error.response.data)
-      setIsLoading(false)
+  const validateForm = () => {
+    if (!form.email.trim() || !form.password.trim()) {
+      setErrorMessage("Preencha email e senha.");
+      return false;
     }
 
-  }
+    return true;
+  };
+
+  const login = async (event) => {
+    event.preventDefault();
+
+    setErrorMessage("");
+
+    if (!validateForm()) return;
+
+    try {
+      setIsLoading(true);
+
+      await authService.login({
+        email: form.email,
+        password: form.password,
+      });
+
+      goToFeedPage(navigate);
+    } catch (error) {
+      const apiMessage =
+        error?.response?.data?.message ||
+        error?.response?.data ||
+        "Não foi possível fazer login. Verifique suas credenciais.";
+
+      setErrorMessage(apiMessage);
+      console.error("Erro no login:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <>
+    <Container>
+      <LogoWrapper>
+        <img src={logoLab} alt="Logo LabLink" />
+        <Subtitle>A Cool Social Network</Subtitle>
+      </LogoWrapper>
 
-      <Container>
-        <div>
-          <img src={logoLab}></img>
-          <p>A Cool Social Network</p>
-        </div>
-      
+      <Form onSubmit={login}>
+        <Input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={onChangeForm}
+          disabled={isLoading}
+          autoComplete="email"
+        />
 
-      
-      <Input
-        value={form.email}
-        onChange={onChangeForm}
-        name="email"
-        placeholder="E-mail"
+        <Input
+          type="password"
+          name="password"
+          placeholder="Senha"
+          value={form.password}
+          onChange={onChangeForm}
+          disabled={isLoading}
+          autoComplete="current-password"
+        />
 
-      />
+        {errorMessage ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
 
+        <BtnContinuar type="submit" disabled={isLoading}>
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : "Continuar"}
+        </BtnContinuar>
+      </Form>
 
-      <Input
-        value={form.password}
-        onChange={onChangeForm}
-        name="password"
-        type={"password"}
-        placeholder="Senha"
+      <Line />
 
-      />
-      
-    
-      <BtnContinuar onClick={login} >  {isLoading ?  <CircularProgress color="inherit" size={30} /> : "Continue"} </BtnContinuar>
+      <Button
+        type="button"
+        onClick={() => goToSignupPage(navigate)}
+        disabled={isLoading}
+      >
+        Criar conta
+      </Button>
+    </Container>
+  );
+};
 
-      <Line/>
-
-      <Button onClick={() => goToSignupPage(navigate)} >Create Your Account</Button>
-      </Container>
-    </>
-  )
-}
-
-export default LoginPage
+export default LoginPage;

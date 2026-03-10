@@ -1,22 +1,17 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React from 'react'
-import FeedPage from "../pages/FeedPage/FeedPage"
-import SignUpPage from "../pages/SignUpPage/SignUpPage"
-import LoginPage from "../pages/LoginPage/LoginPage"
-
+import React, { useState } from "react"
+import { Routes, Route } from "react-router-dom";
+import LoginPage from "../pages/LoginPage/LoginPage";
+import FeedPage from "../pages/FeedPage/FeedPage";
+import SignUpPage from "../pages/SignUpPage/SignUpPage";
 
 const Router = () => {
-    return (
-      <BrowserRouter>
-      <Routes>
-          <Route path="/feed" element={<FeedPage/>}/>
-          <Route path="/signup" element={<SignUpPage/>}/>
-          <Route path="/" element={<LoginPage/>}/>
-          
-         
-      </Routes>
-      </BrowserRouter>
-    )
-  }
-  
-  export default Router
+  return (
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/feed" element={<FeedPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
+    </Routes>
+  );
+};
+
+export default Router;

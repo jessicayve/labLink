@@ -1,57 +1,95 @@
 import styled from "styled-components";
 
-export const CardContainer = styled.div`
-display: flex;
-margin: 0 auto;
-width: 420px;
-height: 180px;
-border: 1px solid #E0E0E0;
-border-radius: 12px;
-margin-top: 20px;
-padding: 8px;
-span {   
-display: flex;
-justify-content: space-around;
-align-items: center;
-margin-top:110px;
-border: 1px solid #E0E0E0;
-border-radius: 12px;
-height: 23px;
-margin-top: 20px;
-margin-left: 10px;
-gap:10px;
-}
-p{
-padding: 9px;
-width: 335px;
-height: 69px;
-font-family: 'IBM Plex Sans';
-font-style: normal;
-font-weight: 400;
-font-size: 18px;
-line-height: 23px;
-color: #000000;
-margin-bottom: 12px;
-}
-h2{
- display: flex;
- width: 132px;
- height: 16px;
- font-family: 'IBM Plex Sans';
- font-style: normal;
- font-weight: 400;
- font-size: 12px;
- line-height: 16px;
- text-align: center;
- color: #6F6F6F;
+export const CardContainer = styled.article`
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+`;
 
-}
-div{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    
-}
+export const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+`;
 
-`
+export const Avatar = styled.div`
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6489 0%, #f9b24e 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+`;
+
+export const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  strong {
+    font-size: 14px;
+    color: #222;
+  }
+
+  span {
+    font-size: 12px;
+    color: #777;
+  }
+`;
+
+export const Content = styled.p`
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  margin: 0 0 16px;
+  
+`;
+
+export const MetaRow = styled.div`
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #777;
+  padding: 10px 0;
+  border-top: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
+`;
+
+export const ActionRow = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+`;
+
+export const ActionButton = styled.button`
+  border: 1px solid #ececec;
+  background: #fafafa;
+  border-radius: 999px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  svg {
+    font-size: 16px;
+  }
+`;
+
+export const CommentPreview = styled.div`
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8f8f8;
+  color: #666;
+  font-size: 14px;
+`;

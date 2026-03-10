@@ -1,112 +1,111 @@
-import { Container, Input, Button, TextoContainer, Titulo } from "../SignUpPage/SignUpPageStyled"
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import CircularProgress from "@mui/material/CircularProgress"
+
+import {
+  Container,
+  Input,
+  Button,
+  TextoContainer,
+  Titulo,
+} from "../SignUpPage/SignUpPageStyled"
 import Header from "../../components/Header"
-import { useEffect, useState, useContext } from 'react'
-import { useNavigate } from "react-router"
-import axios from "axios"
-import { BASE_URL } from "../../constants/url"
-import { goToFeedPage } from "../../routes/coordinator"
-import CircularProgress from '@mui/material/CircularProgress'
-import { GlobalContext } from '../../context/GlobalContext'
-import logoShare from '../../assets/logoShare.png'
+import { authService } from "../../services/authService"
+import { goToFeedPage } from "../../routes/coordinator";
 
 const SignupPage = () => {
+  const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
 
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-    const context = useContext(GlobalContext)
-    const navigate = useNavigate()
+  const onChangeForm = (event) => {
+    const { name, value } = event.target;
 
-    const [isLoading, setIsLoading] = useState(false)
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
 
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        password: ""
-    })
+  const signup = async () => {
+    try {
+      setIsLoading(true);
 
+      const body = {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      };
 
-    const onChangeForm = (event) => {
-        setForm({ ...form, [event.target.name]: event.target.value })
+      const data = await authService.signup(body);
+
+      window.localStorage.setItem("lablink-token", data.token);
+
+      goToFeedPage(navigate);
+    } catch (error) {
+      console.error("Erro no signup:", error);
+      alert(error?.response?.data?.message || "Erro ao criar conta.");
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    const signup = async () => {
+  return (
+    <Container>
+      <Header />
 
+      <Titulo>Welcome to LabLink</Titulo>
 
+      <Input
+        value={form.name}
+        onChange={onChangeForm}
+        name="name"
+        placeholder="Nickname"
+        autoComplete="off"
+      />
 
-        try {
-            setIsLoading(true)
+      <Input
+        value={form.email}
+        name="email"
+        onChange={onChangeForm}
+        placeholder="E-mail"
+        autoComplete="off"
+      />
 
-            const body = {
-                name: form.name,
-                email: form.email,
-                password: form.password
-            }
+      <Input
+        name="password"
+        value={form.password}
+        onChange={onChangeForm}
+        type="password"
+        placeholder="Password"
+        autoComplete="off"
+      />
 
-            const response = await axios.post(
-                `${BASE_URL}/users/signup`,
-                body
-            )
+      <TextoContainer>
+        <p>
+          By continuing, you are agreeing to our
+          <span> User Agreement </span>
+          and our
+          <span> Privacy Policy</span>.
+        </p>
 
-            window.localStorage.setItem("labeddit-token", response.data.token)
-            setIsLoading(false)
+        <p>
+          <input type="checkbox" /> I agree to receive emails about cool stuff
+          from LabLink.
+        </p>
+      </TextoContainer>
 
+      <Button onClick={signup} type="button">
+        {isLoading ? <CircularProgress color="inherit" size={30} /> : "Sign Up"}
+      </Button>
+    </Container>
+  );
+};
 
-
-            goToFeedPage(navigate)
-        } catch (error) {
-            console.log(error.response.data)
-            setIsLoading(false)
-        }
-    }
-
-    return (
-        <>
-        <Container>
-            <Header />
-
-            <Titulo>
-                Welcome to LabLink
-                
-            </Titulo>
-           
-            <Input
-                value={form.name}
-                onChange={onChangeForm}
-                name="name"
-                placeholder="Nickname"
-                autoComplete='off' />
-
-
-            <Input
-                value={form.email}
-                name={"email"}
-                onChange={onChangeForm}
-                placeholder="E-mail"
-                autoComplete='off' />
-
-            <Input
-                name={"password"}
-                value={form.password}
-                onChange={onChangeForm}
-                type={"password"}
-                placeholder="Password" />
-
-
-            <TextoContainer>
-                <div>
-                    <p>By continuing, you are agreeing to our
-                        <span className="textocolorido">  User agreement </span>
-                        and our <span className="textocolorido">  Privacy Policy </span> <br /> </p>
-
-                    <p> <input type="checkbox"></input> I agree to receive emails about cool stuff <br /> from LabEddit  </p>
-                </div>
-
-            </TextoContainer>
-
-            <Button onClick={signup} autoComplete="off"> {isLoading ? <CircularProgress color="inherit" size={30} /> : "Sign Up"}</Button>
-            </Container>
-        </>
-    )
-}
-
-export default SignupPage
+export default SignupPage;

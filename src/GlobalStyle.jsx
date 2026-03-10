@@ -1,9 +1,18 @@
 import { createGlobalStyle } from "styled-components"
 
 export const GlobalStyle = createGlobalStyle`
-    #root {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
-`
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f7f7f8;
+  }
+
+  button, textarea, input {
+    font-family: 'Inter', sans-serif;
+  }
+`;
